@@ -1,12 +1,10 @@
 module VisitHelper
-    def visit_header(visit)
-        if params[:user_id]
-          "#{visit.user.username} visits:"
-        elsif params[:state_id]
-          "#{visit.state.name} visits:"
+    def visit_header(state)
+        if state
+            "Visits to #{state.name}"
         else
-          "All Visits:"
+            "All Visits"
         end
-      end
+    end
 
 end
