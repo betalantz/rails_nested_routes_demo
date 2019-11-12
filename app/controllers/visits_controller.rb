@@ -15,7 +15,12 @@ class VisitsController < ApplicationController
   end
 
   def index
-    @visits = Visit.all
+    id = params[:state_id]
+    if id && @state = State.find_by_id(id)
+      @visits = @state.visits
+    else
+      @visits = Visit.all
+    end
   end
 
 
