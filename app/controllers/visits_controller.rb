@@ -1,12 +1,20 @@
 class VisitsController < ApplicationController
   before_action :if_not_logged_in, only: [:create, :new, :edit, :update]
+  before_action :set_state_if_nested, only: [:new, :index]
 
   def new
-    @visit = current_user.visits.build
+    if @state
+      #nested
+      @visit = @state.visits.build
+    else
+      #unnested
+      @visit = current_user.visits.build
+    end
   end
 
   def create
     @visit = current_user.visits.build(visit_params)
+    
     if @visit.save
       redirect_to visits_path
     else
@@ -15,7 +23,12 @@ class VisitsController < ApplicationController
   end
 
   def index
-    @visits = Visit.all
+    
+    if @state
+      @visits = @state.visits
+    else
+      @visits = Visit.all
+    end
   end
 
 
@@ -43,5 +56,8 @@ class VisitsController < ApplicationController
     params.require(:visit).permit(:state_id, :rating)
   end
 
+  def set_state_if_nested
+  @state = State.find_by_id(params[:state_id]) if params[:state_id]
+  end
 
 end
