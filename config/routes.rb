@@ -16,7 +16,6 @@ Rails.application.routes.draw do
     resources :visits, shallow: true
   end
 
-
   resources :users, only: [:create, :new, :show]
 
 
